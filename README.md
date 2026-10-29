@@ -155,11 +155,19 @@ Este repositorio contiene un **prototipo académico local**. Para presentar sus 
 
 Estas funciones no son necesarias para demostrar el objetivo de persistencia offline de la Unidad 2.
 
+## Video demostrativo
+
+[Ver la demostración en Google Drive](https://drive.google.com/file/d/1_XZ8rypyQ9MxVZxolotjPnFRhntIKHLE/view)
+
+Recorrido: inicio de sesión, creación de una solicitud sin conexión, recuperación del borrador al volver desde segundo plano, persistencia de los datos después de cerrar y reabrir la aplicación, sincronización simulada, comparación y aceptación de una cotización, y seguimiento del pedido.
+
+La carpeta de entrega incluye además el APK de demostración: [desarrollo_movil_encargalo_app](https://drive.google.com/drive/folders/1Ud7RaTxDTHMv-zRThOfjTl5qquTnlTRy?usp=drive_link).
+
 ## Entrega académica
 
 Además del repositorio, la consigna requiere:
 
-- Un video de máximo cinco minutos que muestre navegación, eventos y persistencia SQLite después de cerrar y reabrir la aplicación.
+- Un video de máximo cinco minutos que muestre navegación, eventos y persistencia SQLite después de cerrar y reabrir la aplicación. Enlace en la sección anterior.
 - Una demostración en emulador o dispositivo físico.
 - Una explicación del flujo de información y la arquitectura de almacenamiento local.
 - Historial de commits que evidencie la participación de todos los integrantes.
