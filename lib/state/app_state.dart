@@ -58,9 +58,20 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Borrador temporal del formulario (ciclo de vida: app a segundo plano)
+  // Borrador temporal del formulario (ciclo de vida: app a segundo plano).
+  // Las fotos se representan como una lista JSON de referencias simuladas.
+  static const _camposBorrador = [
+    'titulo',
+    'detalle',
+    'cantidad',
+    'distrito',
+    'categoria',
+    'fecha',
+    'fotos',
+  ];
+
   Map<String, String> get borrador =>
-      {for (final k in ['titulo', 'detalle', 'cantidad', 'distrito']) k: _prefs.getString('b_$k') ?? ''};
+      {for (final k in _camposBorrador) k: _prefs.getString('b_$k') ?? ''};
 
   Future<void> guardarBorradorTemporal(Map<String, String> m) async {
     for (final e in m.entries) {
@@ -69,7 +80,7 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> limpiarBorradorTemporal() async {
-    for (final k in ['titulo', 'detalle', 'cantidad', 'distrito']) {
+    for (final k in _camposBorrador) {
       await _prefs.remove('b_$k');
     }
   }

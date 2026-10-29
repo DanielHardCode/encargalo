@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -37,13 +39,41 @@ class _FormularioScreenState extends State<FormularioScreen> with WidgetsBinding
       _categoria = e.categoria;
       _fecha = DateTime.tryParse(e.fecha) ?? _fecha;
       _fotos.addAll(e.fotos);
+    } else {
+      final categoria = b['categoria'];
+      if (const ['Estampado', 'Bordado', 'Impresión'].contains(categoria)) {
+        _categoria = categoria!;
+      }
+      _fecha = DateTime.tryParse(b['fecha'] ?? '') ?? _fecha;
+      _fotos.addAll(_restaurarFotos(b['fotos']));
     }
   }
 
+  List<String> _restaurarFotos(String? valor) {
+    if (valor == null || valor.isEmpty) return [];
+    try {
+      final fotos = jsonDecode(valor);
+      if (fotos is List && fotos.every((foto) => foto is String)) {
+        return fotos.cast<String>().toList();
+      }
+    } on FormatException {
+      // Un borrador antiguo o dañado no debe impedir abrir el formulario.
+    }
+    return [];
+  }
+
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.paused && widget.editar == null) {
-      _st.guardarBorradorTemporal({'titulo': _titulo.text, 'detalle': _detalle.text, 'cantidad': _cantidad.text, 'distrito': _distrito.text});
+      await _st.guardarBorradorTemporal({
+        'titulo': _titulo.text,
+        'detalle': _detalle.text,
+        'cantidad': _cantidad.text,
+        'distrito': _distrito.text,
+        'categoria': _categoria,
+        'fecha': _fecha.toIso8601String().substring(0, 10),
+        'fotos': jsonEncode(_fotos),
+      });
     }
   }
 
@@ -110,6 +140,7 @@ class _FormularioScreenState extends State<FormularioScreen> with WidgetsBinding
                 title: Text('Fecha deseada: ${_fecha.toIso8601String().substring(0, 10)}'),
                 onTap: () async {
                   final d = await showDatePicker(context: context, initialDate: _fecha, firstDate: DateTime.now(), lastDate: DateTime.now().add(const Duration(days: 365)));
+                  if (!mounted) return;
                   if (d != null) setState(() => _fecha = d);
                 },
               ),
